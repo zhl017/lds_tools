@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <param name="/use_sim_time" value="false"/>
+  <arg name="map_file" default="$(find lds_tools)/maps/map.yaml"/>
+
+  <!-- Rviz Change sub topic /map to /mmap -->
+  <node pkg="rviz" type="rviz" name="rviz"
+    args="-d $(find lds_tools)/rviz/lds01_navigation.rviz">
+    <remap from="map" to="mmap"/>
+  </node>
+
+  <!-- Hector -->
+  <include file="$(find lds_tools)/launch/config.launch"/>
+
+  <!-- map_server Change pub topic /map to /mmap -->
+  <remap from="/map" to="/mmap"/>
+  <node pkg="map_server" type="map_server" name="map" args="$(arg map_file)"/>
+
+</launch>
